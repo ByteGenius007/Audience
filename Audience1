@@ -50,4 +50,18 @@ async def decompose(ctx, *, item: str):
 async def hello(ctx):
     await ctx.send(f'Привет! Я бот {bot.user}, который поможет вам правильно сортировать отходы!')
 
+@bot.command()
+async def bot_help(ctx):
+    """
+    **Список команд:**
+    """
+    help_message = """
+    **Список команд:**
+    `$hello` - Приветственное сообщение от бота.
+    `$sort <item>` - Подсказывает, как правильно утилизировать предмет. Пример: `$sort plastic bottle`.
+    `$decompose <item>` - Информация о времени разложения предмета. Пример: `$decompose plastic bottle`.
+    `$bot_help` - Показывает это сообщение.
+    """
+    await ctx.send(help_message)
+
 bot.run("MY_TOKEN")
