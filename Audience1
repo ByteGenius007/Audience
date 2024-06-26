@@ -1,0 +1,53 @@
+import discord
+from discord.ext import commands
+
+intents = discord.Intents.default()
+intents.message_content = True
+
+bot = commands.Bot(command_prefix='$', intents=intents)
+
+@bot.event
+async def on_ready():
+    print(f'We have logged in as {bot.user}')
+
+# Словарь с информацией о сортировке
+recycling_info = {
+    'пластиковая бутылка': 'Отправляется на переработку.',
+    'бумага': 'Отправляется на переработку.',
+    'стеклянная бутылка': 'Отправляется на переработку.',
+    'банановая кожура': 'Можно выбросить в обычную урну.',
+    'алюминиевая банка': 'Отправляется на переработку.',
+    'пенопласт': 'Выбрасывается в обычную урну.'
+}
+
+@bot.command()
+async def sort(ctx, *, item: str):
+    """Подсказывает, как правильно утилизировать предмет."""
+    item = item.lower()
+    if item in recycling_info:
+        await ctx.send(recycling_info[item])
+    else:
+        await ctx.send('Извините, информация о данном предмете отсутствует. Попробуйте другой предмет.')
+
+@bot.command()
+async def decompose(ctx, *, item: str):
+    """Информация о времени разложения предмета."""
+    decompose_info = {
+        'пластиковая бутылка': '450 лет.',
+        'бумага': '2-6 недель.',
+        'стеклянная бутылка': '1-2 миллиона лет.',
+        'банановая кожура': '2-5 недель.',
+        'алюминиевая банка': '200-500 лет.',
+        'пенопласт': 'Не разлагается.'
+    }
+    item = item.lower()
+    if item in decompose_info:
+        await ctx.send(f'{item.title()} разлагается за {decompose_info[item]}')
+    else:
+        await ctx.send('Извините, информация о разложении данного предмета отсутствует. Попробуйте другой предмет.')
+
+@bot.command()
+async def hello(ctx):
+    await ctx.send(f'Привет! Я бот {bot.user}, который поможет вам правильно сортировать отходы!')
+
+bot.run("MY_TOKEN")
